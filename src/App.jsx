@@ -1,12 +1,41 @@
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
-
+import { NavBar } from './components/NavBar'
+import { Home } from "./pages/Home.js"
+import  About  from "./pages/About.js"
+import Contact from "./pages/Contact.js"
+import { Login } from "./pages/Login.js"
+import { Signup } from "./pages/Signup.js"
+import { Dashboard } from "./pages/Dashboard.js"
+import { useState } from "react";
+import Cart from "./pages/Cart"
+import { PrivateRoute } from "./components/PrivateRoute.js";
 function App() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
-    <main className="flex justify-center gap-4 flex-col min-h-screen">
-      <h1 className="text-3xl text-center font-bold underline">React & Tailwind CSS Starter Pack</h1>
-      <p className="text-center text-xl">This is a starter pack for React & Tailwind CSS projects.</p>
-      <img src="https://bit.ly/3wsmzTy" alt="meme" className="mx-auto" />
-    </main>
+    <div className=" min-h-screen bg-[#050a0f] flex flex-col">
+      <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <Routes>
+        <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact isLoggedIn={isLoggedIn}/>} />
+        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/dashboard" element={
+          <PrivateRoute isLoggedIn={isLoggedIn}>
+            <Dashboard />
+          </PrivateRoute>
+        } />
+        <Route path="/cart" element={
+          <PrivateRoute isLoggedIn={isLoggedIn}>
+            <Cart />
+          </PrivateRoute>
+        } />
+      </Routes>
+
+    </div>
   );
 }
 
